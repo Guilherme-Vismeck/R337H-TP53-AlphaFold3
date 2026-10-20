@@ -5,8 +5,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from structure_utils import (N_CHAINS, N_MODELS, N_RES, REF, START, SYSTEMS,
-                             best_alignment, ca_array, load_chains, model_path)
+from structure_utils import (N_CHAINS, N_MODELS, N_RES, REF, SEEDS, START, SYSTEMS,
+                             all_models, best_alignment, ca_array, load_chains)
 
 OUT = Path("results/tables")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -83,20 +83,19 @@ def analyze(system, model, chains):
     return contacts, key
 
 
-entries = [("1C26", 0, REF)] + [(s, i, model_path(s, i))
-                                for s in SYSTEMS for i in range(N_MODELS)]
+entries = [("1C26", 0, 0, REF)] + [(s, seed * 10 + i, i, p) for s, seed, i, p in all_models()]
 ref_ca = ca_array(load_chains(REF))
 
 all_contacts, all_key = [], []
-for system, model, path in entries:
+for system, model_id, i, path in entries:
     chains = load_chains(path)
-    if system != "1C26":  # reordena as cadeias para a ordem da referencia
+    if system != "1C26":
         _, perm, _ = best_alignment(ca_array(chains), ref_ca)
         chains = [chains[p] for p in perm]
-    c, k = analyze(system, model, chains)
+    c, k = analyze(system, model_id, chains)
     all_contacts += c
     all_key += k
-    print(f"ok: {system} {model}")
+    print(f"ok: {system} id={model_id}")
 
 df = pd.DataFrame(all_contacts)
 key = pd.DataFrame(all_key)
@@ -132,10 +131,12 @@ print(resumo.round(2))
 # --- Contatos consistentes entre modelos ---
 sets = {k: set(zip(g.chain_i, g.chain_j, g.res_i, g.res_j))
         for k, g in df.groupby(["system", "model"])}
-wt_core = set.intersection(*[sets[("WT", i)] for i in range(N_MODELS)])
-mut_core = set.intersection(*[sets[("R337H", i)] for i in range(N_MODELS)])
-wt_any = set.union(*[sets[("WT", i)] for i in range(N_MODELS)])
-mut_any = set.union(*[sets[("R337H", i)] for i in range(N_MODELS)])
+wt_ids = sorted({k[1] for k in sets if k[0] == "WT"})
+mut_ids = sorted({k[1] for k in sets if k[0] == "R337H"})
+wt_core = set.intersection(*[sets[("WT", i)] for i in wt_ids])
+mut_core = set.intersection(*[sets[("R337H", i)] for i in mut_ids])
+wt_any = set.union(*[sets[("WT", i)] for i in wt_ids])
+mut_any = set.union(*[sets[("R337H", i)] for i in mut_ids])
 ref_set = sets[("1C26", 0)]
 
 print(f"\nContatos presentes nos 5 modelos WT: {len(wt_core)}; nos 5 R337H: {len(mut_core)}")

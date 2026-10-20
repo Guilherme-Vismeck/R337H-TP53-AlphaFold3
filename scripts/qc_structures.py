@@ -27,9 +27,11 @@ parser = MMCIFParser(QUIET=True)
 rows = []
 
 for system, exp_seq in expected.items():
+  for seed in [333, 1, 2, 3, 4]:
     for i in range(5):
-        cif = next((PRED / system).glob(f"*_model_{i}.cif"))
-        summ = next((PRED / system).glob(f"*_summary_confidences_{i}.json"))
+        folder = PRED / system / f"seed_{seed}"
+        cif = next(folder.glob(f"*_model_{i}.cif"))
+        summ = next(folder.glob(f"*_summary_confidences_{i}.json"))
         conf = json.loads(summ.read_text())
         model = parser.get_structure(f"{system}_{i}", cif)[0]
         chains = list(model)
@@ -50,6 +52,7 @@ for system, exp_seq in expected.items():
 
         rows.append({
             "system": system,
+            "seed": seed,
             "model": i,
             "n_chains": len(chains),
             "chain_ids": "".join(c.id for c in chains),

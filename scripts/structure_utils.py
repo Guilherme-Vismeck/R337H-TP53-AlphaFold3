@@ -9,6 +9,7 @@ START = 325  # primeiro residuo do fragmento (numeracao da TP53)
 N_RES = 32  # residuos 325..356
 N_CHAINS = 4
 N_MODELS = 5
+SEEDS = [333, 1, 2, 3, 4]
 SYSTEMS = ["WT", "R337H"]
 PRED = Path("data/predictions")
 REF = Path("data/reference/PDB_1C26_biological_assembly.cif")
@@ -26,8 +27,15 @@ def load_chains(path):
     return chains
 
 
-def model_path(system, i):
-    return next((PRED / system).glob(f"*_model_{i}.cif"))
+def model_path(system, seed, i):
+    """Caminho do modelo i (0-4) do sistema na seed indicada."""
+    return next((PRED / system / f"seed_{seed}").glob(f"*_model_{i}.cif"))
+
+
+def all_models():
+    """Lista (sistema, seed, modelo, caminho) de todas as 50 previsoes."""
+    return [(s, seed, i, model_path(s, seed, i))
+            for s in SYSTEMS for seed in SEEDS for i in range(N_MODELS)]
 
 
 def ca_array(chains):
