@@ -2,11 +2,6 @@
 
 Análise estrutural exploratória da variante **p.Arg337His (R337H)** do domínio de tetramerização da p53 (resíduos 325–356), usando previsões do AlphaFold 3 (AlphaFold Server) e comparação com a estrutura experimental [PDB 1C26](https://www.rcsb.org/structure/1C26).
 
-> **Aviso sobre os dados do AlphaFold 3.** As tabelas em `results/tables/` e as figuras em `results/figures/` são derivadas de previsões do AlphaFold 3 e estão sujeitas aos [AlphaFold 3 Output Terms of Use](https://github.com/google-deepmind/alphafold3/blob/main/OUTPUT_TERMS_OF_USE.md) (uso **não comercial**). Elas foram **adaptadas** por este projeto (alinhamento, cálculo de distâncias e contatos, gráficos, figuras no ChimeraX). Ver `results/LEGALLY_BINDING_TERMS_OF_USE.txt`.
-> Citação obrigatória: Abramson, J. et al. *Accurate structure prediction of biomolecular interactions with AlphaFold 3.* Nature (2024). https://doi.org/10.1038/s41586-024-07487-w
-> Este projeto não é afiliado nem endossado pelo Google, Google DeepMind ou Isomorphic Labs.
-
-> **Uso exclusivamente teórico.** Nada aqui é validado para uso clínico nem deve embasar decisões de saúde.
 
 ## Pergunta
 
