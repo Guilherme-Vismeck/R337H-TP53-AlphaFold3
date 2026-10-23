@@ -29,7 +29,7 @@ Até que ponto o AlphaFold 3 reproduz a arquitetura tetramérica conhecida do do
 
 Relatório completo, com métodos, limitações e desvios do plano: [`report/final_report.md`](report/final_report.md).
 
-## O que este projeto NÃO mostra
+## O que este projeto não mostra (ainda)
 
 - Não mede estabilidade termodinâmica, afinidade de associação nem dependência de pH.
 - O AF3 não informa o estado de protonação da histidina; os dois arranjos do anel (NE2 ou CE1 perto do Asp352) podem ser orientações do anel, não estados químicos distintos.
