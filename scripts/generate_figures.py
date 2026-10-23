@@ -57,9 +57,7 @@ for system in ["WT", "R337H"]:
         x = k + off[system] + rng.uniform(-0.06, 0.06, len(y))
         ax1.scatter(x, y, s=38, color=COLORS[system], alpha=0.85,
                     label=system if k == 0 else None, edgecolor="white", linewidth=0.5)
-ax1.axhline(CRYSTAL, color="gray", ls="--", lw=1)
-ax1.text(len(SEED_ORDER) - 0.5, CRYSTAL - 0.07, "1C26 (cristal)", ha="right",
-         va="top", color="gray", fontsize=9)
+ax1.axhline(CRYSTAL, color="gray", ls="--", lw=1, label="1C26 (cristal)")
 ax1.set_xticks(range(len(SEED_ORDER)))
 ax1.set_xticklabels([str(s) for s in SEED_ORDER])
 ax1.set_xlabel("Seed")
@@ -79,6 +77,8 @@ ax2.set_xlabel("Seed")
 ax2.set_ylabel("Fracao das subunidades")
 ax2.set_title("(b) Atomo mais proximo do Asp352 e um carbono")
 ax2.legend(frameon=False)
+ax2.text(0.02, 0.96, "WT: zero em todas as seeds\n(o atomo mais proximo e sempre um N)",
+         transform=ax2.transAxes, va="top", fontsize=9, color="gray")
 
 fig.suptitle("Previsoes AF3 do tetramero p53 (325-356): 5 seeds por sistema", fontsize=11)
 fig.tight_layout()
